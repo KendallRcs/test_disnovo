@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Seller {
+  id         Int       @id @default(autoincrement())
+  name       String
+  territory  Territory @relation(fields: [territoryId], references: [id])
+  territoryId Int
+  Sales      Sale[]    @relation("SellerSales")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+}
+
+model Client {
+  id       Int     @id @default(autoincrement())
+  name     String
+  segmentId  Int
+  segment    Segment @relation(fields: [segmentId], references: [id])
+  Locals Local[]
+  Sales      Sale[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+}
+
+model Local {
+  id         Int       @id @default(autoincrement())
+  name    String
+  client     Client    @relation(fields: [clientId], references: [id])
+  clientId   Int
+  territory  Territory @relation(fields: [territoryId], references: [id])
+  territoryId Int
+  Sales      Sale[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+}
+
+model Territory {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  Sellers Seller[]
+  Locals Local[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+}
+
+model Product {
+  id           Int      @id @default(autoincrement())
+  name         String
+  brand        Brand    @relation(fields: [brandId], references: [id])
+  brandId      Int
+  categoryId Int
+  marketerId Int
+  Sales        Sale[]
+  category   Category @relation(fields: [categoryId], references: [id])
+  marketer   Marketer @relation(fields: [marketerId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+}
+
+model Brand {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  Products Product[]
+  Sales      Sale[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+}
+
+model Sale {
+  id          Int       @id @default(autoincrement())
+  date        DateTime
+  product     Product   @relation(fields: [productId], references: [id])
+  productId   Int
+  brand       Brand     @relation(fields: [brandId], references: [id])
+  brandId     Int
+  client      Client    @relation(fields: [clientId], references: [id])
+  clientId    Int
+  local    Local  @relation(fields: [localId], references: [id])
+  localId  Int
+  seller      Seller    @relation("SellerSales", fields: [sellerId], references: [id])
+  sellerId    Int
+  price       Float
+  quantity    Int
+  totalAmount Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+}
+
+model Marketer {
+  id         Int      @id @default(autoincrement())
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+  products   Product[]
+}
+
+model Category {
+  id         Int      @id @default(autoincrement())
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+  products   Product[]
+}
+
+model Segment {
+  id         Int      @id @default(autoincrement())
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+  clients    Client[]
+}
