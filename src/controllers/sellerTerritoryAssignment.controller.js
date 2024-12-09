@@ -62,6 +62,10 @@ exports.deleteAssignment = async (req, res) => {
 };
 
 const upload = multer({ storage: multer.memoryStorage() }).single('file');
+const excelDateToJSDate = (excelDate) => {
+  const date = new Date((excelDate - 25569) * 86400 * 1000); 
+  return new Date(date.toISOString().split('T')[0]);
+};
 
 exports.importAllFromExcel = async (req, res) => {
   upload(req, res, async (err) => {
