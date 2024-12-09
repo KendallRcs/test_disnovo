@@ -10,8 +10,7 @@ datasource db {
 model Seller {
   id         Int       @id @default(autoincrement())
   name       String
-  territory  Territory @relation(fields: [territoryId], references: [id])
-  territoryId Int
+  assignments SellerTerritoryAssignment[] @relation("SellerAssignments")
   Sales      Sale[]    @relation("SellerSales")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -46,11 +45,23 @@ model Local {
 model Territory {
   id     Int      @id @default(autoincrement())
   name   String   @unique
-  Sellers Seller[]
+  assignments SellerTerritoryAssignment[] @relation("TerritoryAssignments")
   Locals Local[]
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   deletedAt  DateTime?
+}
+
+model SellerTerritoryAssignment {
+  id          Int       @id @default(autoincrement())
+  seller      Seller    @relation("SellerAssignments", fields: [sellerId], references: [id])
+  sellerId    Int
+  territory   Territory @relation("TerritoryAssignments", fields: [territoryId], references: [id])
+  territoryId Int
+  startDate   DateTime
+  endDate     DateTime? 
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Product {
