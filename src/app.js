@@ -15,6 +15,7 @@ app.use('/sellers', require('./routes/seller.routes'));
 app.use('/territories', require('./routes/territory.routes'));
 app.use('/marketers', require('./routes/marketer.routes'));
 app.use('/segments', require('./routes/segment.routes'));
+app.use('/assignments', require('./routes/sellerTerritoryAssignment.routes'));
 
 
 const PORT = process.env.PORT || 3000;
