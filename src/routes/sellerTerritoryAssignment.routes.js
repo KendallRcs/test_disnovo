@@ -6,5 +6,6 @@ router.post('/', assignmentController.createAssignment);
 router.get('/', assignmentController.getAssignments);
 router.put('/:id', assignmentController.updateAssignment);
 router.delete('/:id', assignmentController.deleteAssignment);
+router.post('/import', assignmentController.importAllFromExcel);
 
 module.exports = router;

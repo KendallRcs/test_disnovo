@@ -11,7 +11,6 @@ model Seller {
   id         Int       @id @default(autoincrement())
   name       String
   assignments SellerTerritoryAssignment[] @relation("SellerAssignments")
-  Sales      Sale[]    @relation("SellerSales")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   deletedAt  DateTime?
@@ -100,8 +99,6 @@ model Sale {
   clientId    Int
   local    Local  @relation(fields: [localId], references: [id])
   localId  Int
-  seller      Seller    @relation("SellerSales", fields: [sellerId], references: [id])
-  sellerId    Int
   price       Float
   quantity    Int
   totalAmount Float

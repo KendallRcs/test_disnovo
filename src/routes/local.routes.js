@@ -6,5 +6,6 @@ router.post('/', localController.createLocal);
 router.get('/', localController.getLocals);
 router.put('/:id', localController.updateLocal);
 router.delete('/:id', localController.deleteLocal);
+router.post('/import', localController.importLocalsFromExcel);
 
 module.exports = router;

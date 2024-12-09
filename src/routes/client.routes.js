@@ -6,5 +6,6 @@ router.post('/', clientController.createClient);
 router.get('/', clientController.getClients);
 router.put('/:id', clientController.updateClient);
 router.delete('/:id', clientController.deleteClient);
+router.post('/import', clientController.importClientsFromExcel);
 
 module.exports = router;

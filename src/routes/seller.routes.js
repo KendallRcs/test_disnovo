@@ -6,5 +6,6 @@ router.post('/', sellerController.createSeller);
 router.get('/', sellerController.getSellers);
 router.put('/:id', sellerController.updateSeller);
 router.delete('/:id', sellerController.deleteSeller);
+router.post('/import', sellerController.importSellersFromExcel);
 
 module.exports = router;

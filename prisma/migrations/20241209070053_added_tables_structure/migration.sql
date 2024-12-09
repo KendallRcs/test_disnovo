@@ -91,7 +91,6 @@ CREATE TABLE "Sale" (
     "brandId" INTEGER NOT NULL,
     "clientId" INTEGER NOT NULL,
     "localId" INTEGER NOT NULL,
-    "sellerId" INTEGER NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "quantity" INTEGER NOT NULL,
     "totalAmount" DOUBLE PRECISION NOT NULL,
@@ -176,6 +175,3 @@ ALTER TABLE "Sale" ADD CONSTRAINT "Sale_clientId_fkey" FOREIGN KEY ("clientId") 
 
 -- AddForeignKey
 ALTER TABLE "Sale" ADD CONSTRAINT "Sale_localId_fkey" FOREIGN KEY ("localId") REFERENCES "Local"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Sale" ADD CONSTRAINT "Sale_sellerId_fkey" FOREIGN KEY ("sellerId") REFERENCES "Seller"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
