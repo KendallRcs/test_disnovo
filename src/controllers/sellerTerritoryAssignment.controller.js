@@ -296,6 +296,10 @@ exports.importAllFromExcel = async (req, res) => {
       results.sales = [];
       for (const row of salesData) {
         const { Fecha, Producto, Marca, Cliente, Local, 'Precio (USD)': Precio, Cantidad, 'Monto (USD)': Monto } = row;
+        console.log(row);
+
+        // Validar y convertir la fecha
+        const saleDate = typeof Fecha === 'number' ? excelDateToJSDate(Fecha) : new Date(Fecha);
 
         //Validar cliente
         let client = await prisma.client.findFirst({
@@ -347,7 +351,7 @@ exports.importAllFromExcel = async (req, res) => {
         // Crear el registro de venta
         const sale = await prisma.sale.create({
           data: {
-            date: new Date(Fecha),
+            date: saleDate,
             productId: product.id,
             brandId: brand.id,
             clientId: client.id,

@@ -63,6 +63,10 @@ exports.deleteSale = async (req, res) => {
 };
 
 const upload = multer({ storage: multer.memoryStorage() }).single('file');
+const excelDateToJSDate = (excelDate) => {
+  const date = new Date((excelDate - 25569) * 86400 * 1000); 
+  return new Date(date.toISOString().split('T')[0]);
+};
 
 exports.importSalesFromExcel = async (req, res) => {
   upload(req, res, async (err) => {
@@ -79,6 +83,10 @@ exports.importSalesFromExcel = async (req, res) => {
       const results = [];
       for (const row of data) {
         const { Fecha, Producto, Marca, Cliente, Local, 'Precio (USD)': Precio, Cantidad, 'Monto (USD)': Monto } = row;
+        console.log(row);
+
+        // Validar y convertir la fecha
+        const saleDate = typeof Fecha === 'number' ? excelDateToJSDate(Fecha) : new Date(Fecha);
 
         //Validar cliente
         let client = await prisma.client.findFirst({
@@ -130,7 +138,7 @@ exports.importSalesFromExcel = async (req, res) => {
         // Crear el registro de venta
         const sale = await prisma.sale.create({
           data: {
-            date: new Date(Fecha),
+            date: saleDate,
             productId: product.id,
             brandId: brand.id,
             clientId: client.id,
